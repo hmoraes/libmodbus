@@ -140,3 +140,56 @@ void modbus_set_float_dcba(float f, uint16_t *dest)
     dest[0] = (uint16_t)i;
     dest[1] = (uint16_t)(i >> 16);
 }
+
+/* Get a float from 8 bytes in Modbus format (ABCD) */
+double modbus_get_double(const uint16_t *src)
+{
+	double d;
+    uint64_t i;
+
+    i = (((uint64_t)src[3]) << 48) +
+    		(((uint64_t)src[2]) << 32) +
+			(((uint64_t)src[1]) << 16) + src[0];
+    memcpy(&d, &i, sizeof(double));
+
+    return d;
+}
+
+/* Get a float from 8 bytes in inversed Modbus format (DCBA) */
+double modbus_get_double_dcba(const uint16_t *src)
+{
+	double d;
+    uint64_t i;
+
+    i = bswap_64((((uint64_t)src[3]) << 48) +
+    		(((uint64_t)src[2]) << 32) +
+			(((uint64_t)src[1]) << 16) + src[0]);
+    memcpy(&d, &i, sizeof(double));
+
+    return d;
+}
+
+/* Set a float to 8 bytes in Modbus format (ABCD) */
+void modbus_set_double(double d, uint16_t *dest)
+{
+	uint64_t i;
+
+    memcpy(&i, &d, sizeof(uint64_t));
+    dest[0] = (uint16_t)i;
+    dest[1] = (uint16_t)(i >> 16);
+    dest[2] = (uint16_t)(i >> 32);
+    dest[3] = (uint16_t)(i >> 48);
+}
+
+/* Set a float to 8 bytes in inversed Modbus format (DCBA) */
+void modbus_set_double_dcba(double d, uint16_t *dest)
+{
+	uint64_t i;
+
+    memcpy(&i, &d, sizeof(uint64_t));
+    i = bswap_32(i);
+    dest[0] = (uint16_t)i;
+    dest[1] = (uint16_t)(i >> 16);
+    dest[2] = (uint16_t)(i >> 32);
+    dest[3] = (uint16_t)(i >> 48);
+}
