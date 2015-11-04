@@ -271,6 +271,10 @@ MODBUS_API float modbus_get_float(const uint16_t *src);
 MODBUS_API float modbus_get_float_dcba(const uint16_t *src);
 MODBUS_API void modbus_set_float(float f, uint16_t *dest);
 MODBUS_API void modbus_set_float_dcba(float f, uint16_t *dest);
+MODBUS_API double modbus_get_double(const uint16_t *src);
+MODBUS_API double modbus_get_double_dcba(const uint16_t *src);
+MODBUS_API void modbus_set_double(double d, uint16_t *dest);
+MODBUS_API void modbus_set_double_dcba(double d, uint16_t *dest);
 
 #include "modbus-tcp.h"
 #include "modbus-rtu.h"
